@@ -9,11 +9,6 @@
       "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
       "preview": "vite preview"
    },
-   "husky": {
-      "hooks": {
-         "pre-commit": "npm run lint"
-      }
-   },
    "dependencies": {
       "@emotion/react": "^11.10.6",
       "@emotion/styled": "^11.10.6",
