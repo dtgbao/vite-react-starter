@@ -1,38 +1,45 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "./";
+import { authApi } from "../services/auth";
 
 // Define a type for the slice state
 interface UserState {
-   value: number;
+   token?: string;
 }
 
 // Define the initial state using that type
-const initialState: UserState = {
-   value: 0,
-};
+const initialState: UserState = {};
 
 export const userSlice = createSlice({
    name: "user",
    // `createSlice` will infer the state type from the `initialState` argument
    initialState,
    reducers: {
-      increment: (state) => {
-         state.value += 1;
+      setUser: (state, action: PayloadAction<UserState>) => {
+         state.token = action.payload.token;
       },
-      decrement: (state) => {
-         state.value -= 1;
-      },
-      // Use the PayloadAction type to declare the contents of `action.payload`
-      incrementByAmount: (state, action: PayloadAction<number>) => {
-         state.value += action.payload;
-      },
+   },
+   extraReducers: (builder) => {
+      builder
+         .addMatcher(authApi.endpoints.login.matchPending, (state, action) => {
+            console.log("pending", { state, action });
+         })
+         .addMatcher(
+            authApi.endpoints.login.matchFulfilled,
+            (state, action) => {
+               console.log("fulfilled", { state, action });
+            }
+         )
+         .addMatcher(authApi.endpoints.login.matchRejected, (state, action) => {
+            console.log("rejected", { state, action });
+         });
    },
 });
 
-export const { increment, decrement, incrementByAmount } = userSlice.actions;
+export const { setUser } = userSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectUser = (state: RootState) => state.user.value;
+export const selectUser = (state: RootState) => state.user.token;
 
 export default userSlice.reducer;
