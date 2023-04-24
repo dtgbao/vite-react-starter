@@ -1,0 +1,9 @@
+{
+   "editor.formatOnSave": true,
+   "arrowParens": "always",
+   "printWidth": 80,
+   "tabWidth": 3,
+   "[javascript]": {
+      "editor.formatOnSave": true
+   }
+}
